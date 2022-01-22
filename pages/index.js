@@ -7,10 +7,10 @@ export default function Event ({posts})  {
     <div className="container mx-auto p-10">
       <div className="md:masonry-2-col lg:masonry-3-col box-border mx-auto before:box-inherit after:box-inherit">
       {posts.map(post => (
-            <div className="break-inside shadow-xl rounded-lg my-6">
+            <div className="break-inside shadow-xl rounded-lg m-9" key={post.id}>
               <img
                 className="max-w-full h-auto rounded-lg"
-                src="https://lh3.googleusercontent.com/46M29fiPg0IpFVdNJGRD51QPDBMBVfC_GyTDq2UfHdDKb8UfdJiN4bgkLpLCv4Qenu-SRfI0RniExFGANblaahOwfPsl6KYuFBdu=w600"
+                src={post.image}
               />
               <div className="px-6 py-4">
                 <div className="text-white 
@@ -24,7 +24,7 @@ export default function Event ({posts})  {
                 <div className="flex items-center mt-8">
                   <img
                     className="w-10 h-10 rounded-full mr-4"
-                    src="https://lh3.googleusercontent.com/46M29fiPg0IpFVdNJGRD51QPDBMBVfC_GyTDq2UfHdDKb8UfdJiN4bgkLpLCv4Qenu-SRfI0RniExFGANblaahOwfPsl6KYuFBdu=w600"
+                    src={post.image}
                     alt="Avatar of Jonathan Reinink"
                   />
                   <div className="text-sm">
