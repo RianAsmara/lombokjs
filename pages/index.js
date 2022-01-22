@@ -1,65 +1,67 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 
-export default function Home() {
+import { dateFormat } from "../utils/utils";
+
+
+export default function Event ({posts})  {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    <div className="container mx-auto p-10">
+      <div className="md:masonry-2-col lg:masonry-3-col box-border mx-auto before:box-inherit after:box-inherit">
+      {posts.map(post => (
+            <div className="break-inside shadow-xl rounded-lg my-6">
+              <img
+                className="max-w-full h-auto rounded-lg"
+                src="https://lh3.googleusercontent.com/46M29fiPg0IpFVdNJGRD51QPDBMBVfC_GyTDq2UfHdDKb8UfdJiN4bgkLpLCv4Qenu-SRfI0RniExFGANblaahOwfPsl6KYuFBdu=w600"
+              />
+              <div className="px-6 py-4">
+                <div className="text-white 
+                inline-block
+                bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2">
+                  {dateFormat(post.date).fulldate}
+                </div>
+                <p className="font-bold text-xl mb-2">
+                  {post.title}
+                </p>
+                <div className="flex items-center mt-8">
+                  <img
+                    className="w-10 h-10 rounded-full mr-4"
+                    src="https://lh3.googleusercontent.com/46M29fiPg0IpFVdNJGRD51QPDBMBVfC_GyTDq2UfHdDKb8UfdJiN4bgkLpLCv4Qenu-SRfI0RniExFGANblaahOwfPsl6KYuFBdu=w600"
+                    alt="Avatar of Jonathan Reinink"
+                  />
+                  <div className="text-sm">
+                    <p className="text-gray-900 leading-none">
+                      {post.speaker}
+                    </p>
+                    <p className="text-gray-600">Speaker</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
     </div>
-  )
+  );
+};
+
+
+export async function getStaticProps() {
+  const fs = require('fs')
+  const matter = require('gray-matter')
+  const uniqid = require('uniqid')
+
+  const postsDir = `${process.cwd()}/posts`
+
+  const files = fs.readdirSync(postsDir, 'utf-8')
+  const posts = files
+    .filter(file => file.endsWith('.md'))
+    .map(file => {
+      const rawContent = fs.readFileSync(`${postsDir}/${file}`, { encoding: 'utf8' })
+      const { data } = matter(rawContent)
+
+      return { ...data, id: uniqid()}
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+
+  return {
+    props: { posts }
+  }
 }
