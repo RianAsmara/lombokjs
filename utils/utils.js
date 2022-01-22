@@ -1,5 +1,3 @@
-export const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
 // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
 export const dateFormat = (dateString) => {
   const now = new Date();

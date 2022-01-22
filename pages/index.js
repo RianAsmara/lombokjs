@@ -1,8 +1,5 @@
-
 import { dateFormat } from "../utils/utils";
-
-
-export default function Event ({posts})  {
+export default function Events ({posts})  {
   return (
     <div className="container mx-auto p-10">
       <div className="md:masonry-2-col lg:masonry-3-col box-border mx-auto before:box-inherit after:box-inherit">
@@ -25,7 +22,6 @@ export default function Event ({posts})  {
                   <img
                     className="w-10 h-10 rounded-full mr-4"
                     src={post.image}
-                    alt="Avatar of Jonathan Reinink"
                   />
                   <div className="text-sm">
                     <p className="text-gray-900 leading-none">
@@ -34,8 +30,8 @@ export default function Event ({posts})  {
                     <p className="text-gray-600">Speaker</p>
                   </div>
                 </div>
-              </div>
-            </div>
+          </div>
+          </div>
           ))}
         </div>
     </div>
@@ -59,7 +55,6 @@ export async function getStaticProps() {
 
       return { ...data, id: uniqid()}
     })
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
 
   return {
     props: { posts }
